@@ -5,7 +5,7 @@ import time
 print("""
 CS Day Wheeler V1
 Coded By Yanavut Rojanapron
-https://chokunplayz.com/
+https://github.com/chokunplayz
 """)
 
 print("setting up GPIO MODE")
