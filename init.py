@@ -10,6 +10,8 @@ https://github.com/chokunplayz
 
 print("setting up GPIO MODE")
 
+gpio.setwarnings(False)
+
 try :
     gpio.setmode(gpio.BCM)
 
