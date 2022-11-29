@@ -13,8 +13,8 @@ print("setting up GPIO MODE")
 #try :
 gpio.setmode(gpio.BCM)
 
-gpio.setup(16, gpio.OUTPUT)
-gpio.setup(18, gpio.OUTPUT)
+gpio.setup(16, OUTPUT)
+gpio.setup(18, OUTPUT)
 #except:
     #print("GPIO SETUP FAILED!, EXITING TO PREVENT FUTURE PROBLEMS")
     #exit()
