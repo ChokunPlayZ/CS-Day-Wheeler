@@ -10,14 +10,14 @@ https://github.com/chokunplayz
 
 print("setting up GPIO MODE")
 
-#try :
-gpio.setmode(gpio.BCM)
+try :
+    gpio.setmode(gpio.BCM)
 
-gpio.setup(16, gpio.OUT)
-gpio.setup(18, gpio.OUT)
-#except:
-    #print("GPIO SETUP FAILED!, EXITING TO PREVENT FUTURE PROBLEMS")
-    #exit()
+    gpio.setup(16, gpio.OUT)
+    gpio.setup(18, gpio.OUT)
+except:
+    print("GPIO SETUP FAILED!, EXITING TO PREVENT FUTURE PROBLEMS")
+    exit()
 
 print("GPIO SETUP COMPLETE")
 
@@ -34,8 +34,8 @@ class wser (BaseHTTPRequestHandler):
         self.wfile.write(bytes("<body>", "utf-8"))
         self.wfile.write(bytes("<p>Web server</p>", "utf-8"))
         self.wfile.write(bytes("</body></html>", "utf-8"))
-if __name__ == "__main__":
-    wser = HTTPServer ((hName, Port), wser)
-    print("Web server started http://%s:%s" % (hName, Port))
+
+wser = HTTPServer ((hName, Port), wser)
+print("Web server started http://%s:%s" % (hName, Port))
 
 print("Setting up HTTP SOCKET API")
