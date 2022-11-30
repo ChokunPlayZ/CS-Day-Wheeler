@@ -89,6 +89,23 @@ def stop():
     motor.stop(M4)
     return 'Command Received'
 
+@api.route('/move_left', methods=['GET'])
+def move_left():
+    motor.forward(M1)
+    motor.reverse(M2)
+    motor.reverse(M3)
+    motor.forward(M4)
+    return 'Command Received'
+
+@api.route('/move_right', methods=['GET'])
+def move_right():
+    motor.reverse(M1)
+    motor.forward(M2)
+    motor.forward(M3)
+    motor.reverse(M4)
+    return 'Command Received'
+
+
 if __name__ == '__main__':
     api.run(host='0.0.0.0')
 
