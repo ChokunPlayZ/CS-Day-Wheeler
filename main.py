@@ -42,8 +42,17 @@ M4 = {
 try :
     gpio.setmode(gpio.BCM)
 
-    gpio.setup(16, gpio.OUT)
+    gpio.setup(17, gpio.OUT)
     gpio.setup(18, gpio.OUT)
+
+    gpio.setup(27, gpio.OUT)
+    gpio.setup(22, gpio.OUT)
+
+    gpio.setup(23, gpio.OUT)
+    gpio.setup(24, gpio.OUT)
+
+    gpio.setup(5, gpio.OUT)
+    gpio.setup(6, gpio.OUT)
 except:
     print("GPIO SETUP FAILED!, EXITING TO PREVENT FUTURE PROBLEMS")
     exit()
