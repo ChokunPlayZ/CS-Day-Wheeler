@@ -28,7 +28,7 @@ print("GPIO SETUP COMPLETE")
 print("Setting up HTTP WEB SERVICE")
 
 @api.route('/ping', methods=['GET'])
-def get_companies():
+def ping():
     return 'Pong'
 
 if __name__ == '__main__':
