@@ -16,6 +16,28 @@ print("setting up GPIO MODE")
 
 gpio.setwarnings(False)
 
+
+# Defone Motors Here
+M1 = {
+    "forward": 17,
+    "reverse": 18
+}
+
+M2 = {
+    "forward": 27,
+    "reverse": 22
+}
+
+M3 = {
+    "forward": 23,
+    "reverse": 24
+}
+
+M4 = {
+    "forward": 5,
+    "reverse": 6
+}
+
 try :
     gpio.setmode(gpio.BCM)
 
