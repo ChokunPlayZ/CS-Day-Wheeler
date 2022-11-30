@@ -7,3 +7,7 @@ def forward(motor):
 def reverse(motor):
     GPIO.output(motor['forward'], GPIO.LOW)
     GPIO.output(motor['reverse'], GPIO.HIGH)
+
+def stop(motor):
+    GPIO.output(motor['forward'], GPIO.LOW)
+    GPIO.output(motor['reverse'], GPIO.LOW)

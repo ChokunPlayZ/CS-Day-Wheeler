@@ -56,6 +56,30 @@ print("Setting up HTTP WEB SERVICE")
 def ping():
     return 'Pong'
 
+@api.route('/forward', methods=['GET'])
+def forward():
+    motor.forward(M1)
+    motor.forward(M2)
+    motor.forward(M3)
+    motor.forward(M4)
+    return 'Command Received'
+
+@api.route('/reverse', methods=['GET'])
+def reverse():
+    motor.reverse(M1)
+    motor.reverse(M2)
+    motor.reverse(M3)
+    motor.reverse(M4)
+    return 'Command Received'
+
+@api.route('/stop', methods=['GET'])
+def stop():
+    motor.stop(M1)
+    motor.stop(M2)
+    motor.stop(M3)
+    motor.stop(M4)
+    return 'Command Received'
+
 if __name__ == '__main__':
     api.run(host='0.0.0.0')
 
