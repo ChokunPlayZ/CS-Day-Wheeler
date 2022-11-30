@@ -1,8 +1,10 @@
 import RPi.GPIO as gpio
 from flask import Flask, json
 import time
+import lib.motor as motor
 
 api = Flask(__name__)
+gpio.cleanup()
 
 print("""
 CS Day Wheeler V1
@@ -34,4 +36,3 @@ def ping():
 if __name__ == '__main__':
     api.run()
 
-print("Setting up HTTP SOCKET API")
