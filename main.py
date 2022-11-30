@@ -58,3 +58,5 @@ def ping():
 
 if __name__ == '__main__':
     api.run()
+
+print('Finish setting up API Server')
