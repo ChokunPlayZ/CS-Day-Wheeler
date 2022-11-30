@@ -18,7 +18,7 @@ print("setting up GPIO MODE")
 gpio.setwarnings(False)
 
 
-# Defone Motors Here
+# Define Motors Here
 M1 = {
     "forward": 17,
     "reverse": 18
