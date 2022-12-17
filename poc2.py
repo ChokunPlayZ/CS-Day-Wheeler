@@ -164,7 +164,7 @@ def gen(cap):
 
                 # If there are no lines detected, stop the robot
                 if num_lines == 0:
-                    stop()
+                    mecanum.stop(M1, M2, M3, M4)
                 else:
                     avg_x1 = avg_x1 // num_lines
                     avg_x2 = avg_x2 // num_lines
@@ -174,13 +174,13 @@ def gen(cap):
 
                     # If the average position is to the left of the center, move the robot to the right
                     if avg_pos < center_x:
-                        move_right()
+                        mecanum.move_right(M1, M2, M3, M4)
                     # If the average position is to the right of the center, move the robot to the left
                     elif avg_pos > center_x:
-                        move_left()
+                        mecanum.move_left(M1, M2, M3, M4)
                     # If the average position is close to the center, keep the robot moving forward
                     else:
-                        forward()
+                        mecanum.forward(M1, M2, M3, M4)
 
             # Encode the frame as a JPEG image
             result, frame = cv2.imencode('.jpg', frame, encode_param)
