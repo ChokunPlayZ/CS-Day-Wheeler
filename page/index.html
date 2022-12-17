@@ -1,0 +1,120 @@
+<html>
+  <head>
+    <title>Robot Control</title>
+  </head>
+  <style>
+    body {
+      background-color: #333;
+      color: white;
+    }
+
+    .container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: 100%;
+      max-width: 400px;
+      margin: 0 auto;
+    }
+
+    .menu {
+      display: flex;
+      align-items: center;
+      margin-top: 20px;
+    }
+
+    #shutdown {
+      margin-right: 20px;
+      background-color: #444;
+      border: none;
+      color: white;
+      cursor: pointer;
+    }
+
+    #automatic-mode {
+      cursor: pointer;
+    }
+
+    .controls button {
+      width: 80px;
+      height: 80px;
+      font-size: 18px;
+      background-color: #444;
+      border: none;
+      color: white;
+      cursor: pointer;
+      border-radius: 50%; /* Add this to make the buttons circular */
+    }
+
+    .controls {
+      display: flex;
+      flex-direction: row; /* Change this to arrange the buttons in a row */
+      align-items: center;
+      justify-content: space-around; /* Add this to distribute the buttons evenly */
+    }
+  </style>
+  <body>
+    <h1>Robot Control</h1>
+    <div class="container">
+      <div class="controls">
+        <button id="turn-left">Turn Left</button>
+        <button id="forward">Forward</button>
+        <button id="turn-right">Turn Right</button>
+        <br />
+        <button id="left">Left</button>
+        <button id="reverse">Reverse</button>
+        <button id="right">Right</button>
+      </div>
+
+      <div class="menu">
+        <button id="shutdown">Shutdown</button>
+        <label for="automatic-mode">Automatic Mode</label>
+        <input type="checkbox" id="automatic-mode" />
+      </div>
+    </div>
+
+    <script>
+      const apiBaseUrl = "http://localhost:5000/api/v1";
+
+      const forwardButton = document.getElementById("forward-button");
+      forwardButton.addEventListener("click", () => {
+        fetch(`${apiBaseUrl}/forward`, { method: "POST" });
+      });
+
+      const reverseButton = document.getElementById("reverse-button");
+      reverseButton.addEventListener("click", () => {
+        fetch(`${apiBaseUrl}/reverse`, { method: "POST" });
+      });
+
+      const stopButton = document.getElementById("stop-button");
+      stopButton.addEventListener("click", () => {
+        fetch(`${apiBaseUrl}/stop`, { method: "POST" });
+      });
+
+      const moveLeftButton = document.getElementById("move-left-button");
+      moveLeftButton.addEventListener("click", () => {
+        fetch(`${apiBaseUrl}/move_left`, { method: "POST" });
+      });
+
+      const moveRightButton = document.getElementById("move-right-button");
+      moveRightButton.addEventListener("click", () => {
+        fetch(`${apiBaseUrl}/move_right`, { method: "POST" });
+      });
+
+      const turnLeftButton = document.getElementById("turn-left-button");
+      turnLeftButton.addEventListener("click", () => {
+        fetch(`${apiBaseUrl}/turn_left`, { method: "POST" });
+      });
+
+      const turnRightButton = document.getElementById("turn-right-button");
+      turnRightButton.addEventListener("click", () => {
+        fetch(`${apiBaseUrl}/turn_right`, { method: "POST" });
+      });
+
+      const shutdownButton = document.getElementById("shutdown");
+      shutdownButton.addEventListener("click", () => {
+        fetch(`${apiBaseUrl}/shutdown`, { method: "POST" });
+      });
+    </script>
+  </body>
+</html>
