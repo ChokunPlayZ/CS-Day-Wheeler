@@ -4,6 +4,7 @@ import RPi.GPIO as gpio
 from flask import Flask, jsonify, Response
 import time
 import lib.motor as motor
+import lib.mecanum as mecanum
 import subprocess
 import threading
 
@@ -50,48 +51,6 @@ def setup_gpio():
     motor_setup(M3)
     motor_setup(M4)
 
-def forward():
-    motor.forward(M1)
-    motor.forward(M2)
-    motor.forward(M3)
-    motor.forward(M4)
-
-def reverse():
-    motor.reverse(M1)
-    motor.reverse(M2)
-    motor.reverse(M3)
-    motor.reverse(M4)
-
-def stop():
-    motor.stop(M1)
-    motor.stop(M2)
-    motor.stop(M3)
-    motor.stop(M4)
-
-def move_left():
-    motor.forward(M1)
-    motor.reverse(M2)
-    motor.reverse(M3)
-    motor.forward(M4)
-   
-def move_right():
-    motor.reverse(M1)
-    motor.forward(M2)
-    motor.forward(M3)
-    motor.reverse(M4)
-
-def turn_left():
-    motor.forward(M1)
-    motor.reverse(M2)
-    motor.forward(M3)
-    motor.reverse(M4)
-
-def turn_right():
-    motor.reverse(M1)
-    motor.forward(M2)
-    motor.reverse(M3)
-    motor.forward(M4)
-
 def create_response(success, code, message):
     if success:
         return jsonify({'success': success, 'code': code, 'message': message})
@@ -104,37 +63,37 @@ def ping():
 
 @app.route('/api/v1/forward', methods=['POST'])
 def forward_api():
-    forward()
+    mecanum.forward(M1, M2, M3, M4)
     return create_response(True, 200, 'Command Received')
 
 @app.route('/api/v1/reverse', methods=['POST'])
 def reverse_api():
-    reverse()
+    mecanum.reverse(M1, M2, M3, M4)
     return create_response(True, 200, 'Command Received')
 
 @app.route('/api/v1/stop', methods=['POST'])
 def stop_api():
-    stop()
+    mecanum.stop(M1, M2, M3, M4)
     return create_response(True, 200, 'Command Received')
 
 @app.route('/api/v1/move_left', methods=['POST'])
 def move_left_api():
-    move_left()
+    mecanum.move_left(M1, M2, M3, M4)
     return create_response(True, 200, 'Command Received')
 
 @app.route('/api/v1/move_right', methods=['POST'])
 def move_right_api():
-    move_right()
+    mecanum.move_right(M1, M2, M3, M4)
     return create_response(True, 200, 'Command Received')
 
 @app.route('/api/v1/turn_left', methods=['POST'])
 def turn_left_api():
-    turn_left()
+    mecanum.turn_left(M1, M2, M3, M4)
     return create_response(True, 200, 'Command Received')
 
 @app.route('/api/v1/turn_right', methods=['POST'])
 def turn_right_api():
-    turn_right()
+    mecanum.turn_right(M1, M2, M3, M4)
     return create_response(True, 200, 'Command Received')
 
 # Global variable to enable/disable auto steer
@@ -246,6 +205,11 @@ def auto_steer_api():
         return create_response(True, 200, 'Auto steer enabled')
     else:
         return create_response(True, 200, 'Auto steer disabled')
+
+@app.route('/api/v1/auto_steer/status', methods=['GET'])
+def get_auto_steer_status():
+    global auto_steer_enabled
+    return jsonify({'auto_steer_enabled': auto_steer_enabled})
 
 # Main function
 def main():

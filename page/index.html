@@ -115,6 +115,30 @@
       shutdownButton.addEventListener("click", () => {
         fetch(`${apiBaseUrl}/shutdown`, { method: "POST" });
       });
+
+      const checkbox = document.getElementById("automatic-mode");
+
+      function updateAutoSteerStatus() {
+        fetch(`${apiBaseUrl}/auto_steer/status`)
+          .then((response) => response.json())
+          .then((data) => {
+            checkbox.checked = data.auto_steer_enabled;
+          });
+      }
+
+      // Update the status of the auto steer feature when the page loads
+      updateAutoSteerStatus();
+
+      // Update the status of the auto steer feature when the checkbox is changed
+      checkbox.addEventListener("change", () => {
+        const enabled = checkbox.checked;
+        fetch(`${apiBaseUrl}/auto_steer/enable`, {
+          method: "POST",
+          body: JSON.stringify({ enabled }),
+        });
+      });
+
+      setInterval(updateAutoSteerStatus, 2000); // Update the status every 2 seconds
     </script>
   </body>
 </html>
