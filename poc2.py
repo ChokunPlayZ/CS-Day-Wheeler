@@ -7,6 +7,7 @@ import lib.motor as motor
 import lib.mecanum as mecanum
 import subprocess
 import threading
+import picamera
 
 app = Flask(__name__, static_folder='page')
 
@@ -112,86 +113,26 @@ def detect_lines():
 
 @app.route('/video_feed')
 def video_feed():
-    return Response(gen(cap),
+    return Response(gen(Camera()),
                     mimetype='multipart/x-mixed-replace; boundary=frame')
 
-def gen(cap):
+def gen(camera):
     while True:
-        # Read a frame from the video
-        ret, frame = cap.read()
+        frame = camera.get_frame()
+        yield (b'--frame\r\n'
+               b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')
 
-        encode_param = [int(cv2.IMWRITE_JPEG_QUALITY), 90]
+class Camera:
+    def __init__(self):
+        self.camera = picamera.PiCamera()
+        self.camera.resolution = (640, 480)
+        self.camera.framerate = 24
 
-        # Convert the frame to grayscale
-        gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
-
-        # Apply a blur to the image
-        blur = cv2.GaussianBlur(gray, (5,5), 0)
-
-        # Detect edges in the image using the Canny function
-        edges = cv2.Canny(blur, 50, 150)
-
-        # Detect lines in the image using the HoughLinesP function
-        lines = cv2.HoughLinesP(edges, 1, np.pi/180, 100, minLineLength=10, maxLineGap=250)
-
-        # Draw the detected lines on the original image
-        if lines is not None:
-            for line in lines:
-                x1, y1, x2, y2 = line[0]
-                cv2.line(frame, (x1, y1), (x2, y2), (0, 255, 0), 2)
-
-        # Determine the center of the image
-        center_x = frame.shape[1] // 2
-        center_y = frame.shape[0] // 2
-
-        # Draw a circle at the center of the image
-        cv2.circle(frame, (center_x, center_y), 5, (0, 0, 255), -1)
-
-        # If auto steer is enabled, adjust the robot's movement based on the position of the detected lines
-        if auto_steer_enabled:
-            # Initialize variables to store the average position of the lines
-            avg_x1 = 0
-            avg_x2 = 0
-            num_lines = 0
-
-            # Iterate through the detected lines and calculate the average position
-            if lines is not None:
-                for line in lines:
-                    x1, y1, x2, y2 = line[0]
-                    avg_x1 += x1
-                    avg_x2 += x2
-                    num_lines += 1
-
-                # If there are no lines detected, stop the robot
-                if num_lines == 0:
-                    mecanum.stop(M1, M2, M3, M4)
-                else:
-                    avg_x1 = avg_x1 // num_lines
-                    avg_x2 = avg_x2 // num_lines
-
-                    # Calculate the average position of the lines
-                    avg_pos = (avg_x1 + avg_x2) // 2
-
-                    # If the average position is to the left of the center, move the robot to the right
-                    if avg_pos < center_x:
-                        mecanum.move_right(M1, M2, M3, M4)
-                    # If the average position is to the right of the center, move the robot to the left
-                    elif avg_pos > center_x:
-                        mecanum.move_left(M1, M2, M3, M4)
-                    # If the average position is close to the center, keep the robot moving forward
-                    else:
-                        mecanum.forward(M1, M2, M3, M4)
-
-            # Encode the frame as a JPEG image
-            result, frame = cv2.imencode('.jpg', frame, encode_param)
-
-            # Convert the frame to a bytes object
-            frame = frame.tobytes()
-
-            # Yield the frame to the mjpeg stream
-            yield (b'--frame\r\n'
-                b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')
-
+    def get_frame(self):
+        frame = io.BytesIO()
+        self.camera.capture(frame, 'jpeg', use_video_port=True)
+        frame.seek(0)
+        return frame.read()
 
 # API endpoint to enable/disable auto steer
 @app.route('/api/v1/auto_steer', methods=['POST'])
