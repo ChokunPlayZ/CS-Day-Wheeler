@@ -76,37 +76,37 @@
     <script>
       const apiBaseUrl = "http://localhost:5000/api/v1";
 
-      const forwardButton = document.getElementById("forward-button");
+      const forwardButton = document.getElementById("forward");
       forwardButton.addEventListener("click", () => {
         fetch(`${apiBaseUrl}/forward`, { method: "POST" });
       });
 
-      const reverseButton = document.getElementById("reverse-button");
+      const reverseButton = document.getElementById("reverse");
       reverseButton.addEventListener("click", () => {
         fetch(`${apiBaseUrl}/reverse`, { method: "POST" });
       });
 
-      const stopButton = document.getElementById("stop-button");
+      const stopButton = document.getElementById("stop");
       stopButton.addEventListener("click", () => {
         fetch(`${apiBaseUrl}/stop`, { method: "POST" });
       });
 
-      const moveLeftButton = document.getElementById("move-left-button");
+      const moveLeftButton = document.getElementById("move-left");
       moveLeftButton.addEventListener("click", () => {
         fetch(`${apiBaseUrl}/move_left`, { method: "POST" });
       });
 
-      const moveRightButton = document.getElementById("move-right-button");
+      const moveRightButton = document.getElementById("move-right");
       moveRightButton.addEventListener("click", () => {
         fetch(`${apiBaseUrl}/move_right`, { method: "POST" });
       });
 
-      const turnLeftButton = document.getElementById("turn-left-button");
+      const turnLeftButton = document.getElementById("turn-left");
       turnLeftButton.addEventListener("click", () => {
         fetch(`${apiBaseUrl}/turn_left`, { method: "POST" });
       });
 
-      const turnRightButton = document.getElementById("turn-right-button");
+      const turnRightButton = document.getElementById("turn-right");
       turnRightButton.addEventListener("click", () => {
         fetch(`${apiBaseUrl}/turn_right`, { method: "POST" });
       });
