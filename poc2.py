@@ -57,7 +57,7 @@ def create_response(success, code, message):
     else:
         return jsonify({'success': success, 'error_code': code, 'error_message': message})
 
-@app.route('/api/v1/ping', methods=['POST'])
+@app.route('/api/v1/ping', methods=['POST','GET'])
 def ping():
     return create_response(True, 200, 'Pong')
 
