@@ -221,15 +221,15 @@ def shutdown():
     process = subprocess.Popen(shutdown_command.split(), stdout=subprocess.PIPE)
     output = process.communicate()[0]
     return create_response(True, 200, output)
-    
+
 # Main function
 def main():
     # Set up the GPIO pins
     setup_gpio()
 
     # Start the line detection loop in a separate thread
-    line_detection_thread = threading.Thread(target=detect_lines)
-    line_detection_thread.start()
+    # line_detection_thread = threading.Thread(target=detect_lines)
+    # line_detection_thread.start()
 
     # Start the Flask API
     app.run(host='0.0.0.0')
