@@ -101,16 +101,29 @@ def turn_right_api():
 # Global variable to enable/disable auto steer
 auto_steer_enabled = False
 
-@app.route('/video_feed')
-def video_feed():
-    return Response(gen(Camera()),
-                    mimetype='multipart/x-mixed-replace;')
+@app.route('/still')
+def still():
+    # Create a PiCamera object
+    camera = picamera.PiCamera()
 
-def gen(camera):
-    while True:
-        frame = camera.get_frame()
-        yield (b'--frame\r\n'
-               b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')
+    # Set the resolution of the camera
+    camera.resolution = (640, 480)
+
+    # Capture a frame and store it in a PiRGBArray object
+    raw_capture = picamera.PiRGBArray(camera)
+    camera.capture(raw_capture, format='rgb')
+
+    # Convert the PiRGBArray object to a PIL image
+    image = Image.fromarray(raw_capture.array)
+
+    # Create a response object with the image data
+    response = make_response(image.tobytes())
+    response.headers.set('Content-Type', 'image/jpeg')
+
+    # Close the camera
+    camera.close()
+
+    return response
 
 class Camera:
     def __init__(self):
