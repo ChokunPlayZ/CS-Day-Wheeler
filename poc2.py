@@ -1,7 +1,7 @@
 import cv2
 import numpy as np
 import RPi.GPIO as gpio
-from flask import Flask, jsonify, Response
+from flask import Flask, jsonify, make_response
 import time
 import lib.motor as motor
 import lib.mecanum as mecanum
@@ -103,21 +103,22 @@ auto_steer_enabled = False
 
 @app.route('/still')
 def still():
-    # Create a PiCamera object
     camera = picamera.PiCamera()
 
     # Set the resolution of the camera
     camera.resolution = (640, 480)
 
-    # Capture a frame and store it in a PiRGBArray object
-    raw_capture = picamera.PiRGBArray(camera)
-    camera.capture(raw_capture, format='rgb')
+    # Create a binary stream to store the image data
+    stream = io.BytesIO()
 
-    # Convert the PiRGBArray object to a PIL image
-    image = Image.fromarray(raw_capture.array)
+    # Capture a frame and save it to the stream
+    camera.capture(stream, format='jpeg')
+
+    # Reset the stream position to the beginning
+    stream.seek(0)
 
     # Create a response object with the image data
-    response = make_response(image.tobytes())
+    response = make_response(stream.read())
     response.headers.set('Content-Type', 'image/jpeg')
 
     # Close the camera
