@@ -8,6 +8,7 @@ import lib.mecanum as mecanum
 import subprocess
 import threading
 import picamera
+import io
 
 app = Flask(__name__, static_folder='page')
 
@@ -100,17 +101,6 @@ def turn_right_api():
 # Global variable to enable/disable auto steer
 auto_steer_enabled = False
 
-def detect_lines():
-    # Capture video from camera or video file
-    global cap
-    cap = cv2.VideoCapture(0)
-
-    # Set up the mjpeg stream
-    ret, frame = cap.read()
-    encode_param = [int(cv2.IMWRITE_JPEG_QUALITY), 90]
-    result, frame = cv2.imencode('.jpg', frame, encode_param)
-    frame = frame.tobytes()
-
 @app.route('/video_feed')
 def video_feed():
     return Response(gen(Camera()),
@@ -167,10 +157,6 @@ def shutdown():
 def main():
     # Set up the GPIO pins
     setup_gpio()
-
-    # Start the line detection loop in a separate thread
-    # line_detection_thread = threading.Thread(target=detect_lines)
-    # line_detection_thread.start()
 
     # Start the Flask API
     app.run(host='0.0.0.0')
