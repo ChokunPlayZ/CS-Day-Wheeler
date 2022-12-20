@@ -1,4 +1,3 @@
-import motor
 def forward(M1, M2, M3, M4):
     motor.forward(M1)
     motor.forward(M2)
