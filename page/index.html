@@ -68,6 +68,7 @@
 
       <div class="menu">
         <button id="shutdown">Shutdown</button>
+        <button id="stop">Stop</button>
         <label for="automatic-mode">Automatic Mode</label>
         <input type="checkbox" id="automatic-mode" />
       </div>
@@ -91,12 +92,12 @@
         fetch(`${apiBaseUrl}/stop`, { method: "POST" });
       });
 
-      const moveLeftButton = document.getElementById("move-left");
+      const moveLeftButton = document.getElementById("left");
       moveLeftButton.addEventListener("click", () => {
         fetch(`${apiBaseUrl}/move_left`, { method: "POST" });
       });
 
-      const moveRightButton = document.getElementById("move-right");
+      const moveRightButton = document.getElementById("right");
       moveRightButton.addEventListener("click", () => {
         fetch(`${apiBaseUrl}/move_right`, { method: "POST" });
       });
