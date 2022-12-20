@@ -104,7 +104,7 @@ auto_steer_enabled = False
 @app.route('/video_feed')
 def video_feed():
     return Response(gen(Camera()),
-                    mimetype='multipart/x-mixed-replace; boundary=frame')
+                    mimetype='multipart/x-mixed-replace;')
 
 def gen(camera):
     while True:
