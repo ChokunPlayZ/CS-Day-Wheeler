@@ -211,6 +211,17 @@ def get_auto_steer_status():
     global auto_steer_enabled
     return jsonify({'auto_steer_enabled': auto_steer_enabled})
 
+@app.route('/')
+def index():
+    return app.send_static_file('index.html')
+
+@app.route('/api/v1/shutdown', methods=['POST'])
+def shutdown():
+    shutdown_command = "sudo shutdown -h now"
+    process = subprocess.Popen(shutdown_command.split(), stdout=subprocess.PIPE)
+    output = process.communicate()[0]
+    return create_response(True, 200, output)
+    
 # Main function
 def main():
     # Set up the GPIO pins
